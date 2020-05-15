@@ -2,6 +2,7 @@ package com.msr.data;
 
 import com.msr.model.Site;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository functionality for Site
@@ -9,6 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Measurabl
  * @since 2019-06-06
  */
+@Repository
 public interface SiteRepository extends PagingAndSortingRepository<Site, Integer> {
 }
 

@@ -2,6 +2,13 @@ package com.msr;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.List;
+
+import com.msr.data.SiteRepository;
+import com.msr.model.Site;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +53,18 @@ public class BuildingsController {
         }
         return response;
     }
+
+    @Autowired
+    private SiteRepository siteRepository;
+
+    @GetMapping("/sites")
+    public Iterable<Site> getAllUsers()
+    {
+        return siteRepository.findAll();
+    }
+
+
+
 }
 
 ////////////////////////////////////////////////////////////

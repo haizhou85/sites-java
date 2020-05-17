@@ -14,9 +14,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SiteRepository extends PagingAndSortingRepository<Site, Integer> {
-    
-    @Query("SELECT SUM(SIZE_SQFT) FROM SITE_USES WHERE SITE_ID = ?1")
-    public long total_size(int site_id);
 }
 
 ////////////////////////////////////////////////////////////

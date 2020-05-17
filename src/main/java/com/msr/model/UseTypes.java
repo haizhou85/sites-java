@@ -1,9 +1,13 @@
 package com.msr.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Lookup types
@@ -12,6 +16,10 @@ import javax.persistence.Id;
  * @since 2019-06-11
  */
 @Data
+@Table(name="site_uses")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class UseTypes {
 
@@ -19,6 +27,14 @@ public class UseTypes {
     private int id;
 
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
 
 ////////////////////////////////////////////////////////////

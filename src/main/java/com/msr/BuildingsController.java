@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -67,15 +68,15 @@ public class BuildingsController {
 
     @Autowired
     private SiteRepository siteRepository;
-
+    
     @GetMapping("/sites")
-    public Iterable<Site> getAllUsers()
+    public List<Site> getAllSites()
     {
-        return siteRepository.findAll();
+        return (List<Site>) siteRepository.findAll();
     }
 
     @GetMapping("/sites/{id}")
-    public ResponseEntity<Site> getUsersById(@PathVariable(value = "id") int id)
+    public ResponseEntity<Site> getSitesById(@PathVariable(value = "id") int id)
       throws NoSuchElementException {
         Site site =
             siteRepository
@@ -85,7 +86,7 @@ public class BuildingsController {
     }
 
     @PostMapping("/sites")
-    public Site createUser(@Valid @RequestBody Site site) {
+    public Site createSite(@Valid @RequestBody Site site) {
       return siteRepository.save(site);
     }
 
@@ -110,7 +111,7 @@ public class BuildingsController {
     }
 
     @DeleteMapping("/sites/{id}")
-    public Map<String, Boolean> deleteUser(@PathVariable(value = "id") int id) 
+    public Map<String, Boolean> deleteSite(@PathVariable(value = "id") int id) 
         throws NoSuchElementException {
         Site site =
             siteRepository

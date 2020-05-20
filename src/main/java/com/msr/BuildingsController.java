@@ -3,18 +3,13 @@ package com.msr;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-
-import javax.validation.Valid;
 
 import com.msr.data.SiteRepository;
 import com.msr.model.Site;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,60 +65,44 @@ public class BuildingsController {
     private SiteRepository siteRepository;
     
     @GetMapping("/sites")
-    public List<Site> getAllSites()
-    {
+    List<Site> getAllSites() {
         return (List<Site>) siteRepository.findAll();
     }
 
     @GetMapping("/sites/{id}")
-    public ResponseEntity<Site> getSitesById(@PathVariable(value = "id") int id)
-      throws NoSuchElementException {
-        Site site =
-            siteRepository
-                .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Site not found on :: " + id));
-        return ResponseEntity.ok().body(site);
+    Site getSiteById(@PathVariable int id) {
+      return siteRepository.findById(id)
+       .orElseThrow(() -> new NoSuchElementException("Site not found on :: " + id));
     }
 
     @PostMapping("/sites")
-    public Site createSite(@Valid @RequestBody Site site) {
-      return siteRepository.save(site);
+    Site newSite(@RequestBody Site newSite) {
+      return siteRepository.save(newSite);
     }
 
 
     @PutMapping("/sites/{id}")
-    public ResponseEntity<Site> updateSite(
-      @PathVariable(value = "id") int id, @Valid @RequestBody Site siteDetails)
-      throws NoSuchElementException {
-
-        Site site =
-            siteRepository
+    Site updateSite(@PathVariable int id, @RequestBody Site newSiteDetails) {
+        return siteRepository
                 .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Site not found on :: " + id));
-
-        site.setName(siteDetails.getName());
-        site.setAddress(siteDetails.getAddress());
-        site.setZipcode(siteDetails.getZipcode());
-        site.setCity(siteDetails.getCity());
-        site.setState(siteDetails.getState());
-        final Site updatedSite = siteRepository.save(site);
-        return ResponseEntity.ok(updatedSite);
+                .map(site -> {
+                    site.setName(newSiteDetails.getName());
+                    site.setAddress(newSiteDetails.getAddress());
+                    site.setZipcode(newSiteDetails.getZipcode());
+                    site.setCity(newSiteDetails.getCity());
+                    site.setState(newSiteDetails.getState());
+                    return siteRepository.save(site);
+                })
+                .orElseGet(() -> {
+                    newSiteDetails.setId(id);
+                    return siteRepository.save(newSiteDetails);
+                  });
     }
 
     @DeleteMapping("/sites/{id}")
-    public Map<String, Boolean> deleteSite(@PathVariable(value = "id") int id) 
-        throws NoSuchElementException {
-        Site site =
-            siteRepository
-                .findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Site not found on :: " + id));
-
-        siteRepository.delete(site);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-  }
-
+    void deleteSite(@PathVariable int id) {
+        siteRepository.deleteById(id);
+    }
 }
 
 ////////////////////////////////////////////////////////////

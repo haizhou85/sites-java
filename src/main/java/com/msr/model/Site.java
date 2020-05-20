@@ -5,10 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.util.List;
 
@@ -27,6 +30,8 @@ import java.util.List;
 public class Site {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
     private String name;
@@ -39,7 +44,7 @@ public class Site {
 
     private String zipcode;
 
-    @OneToMany(mappedBy = "site")
+    @Transient
     private List<SiteUses> siteUses;
 
     public int getId() {
@@ -89,15 +94,6 @@ public class Site {
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
-
-    public List<SiteUses> getSiteUses() {
-        return siteUses;
-    }
-
-    public void setSiteUses(List<SiteUses> siteUses) {
-        this.siteUses = siteUses;
-    }
-
 }
 
 ////////////////////////////////////////////////////////////

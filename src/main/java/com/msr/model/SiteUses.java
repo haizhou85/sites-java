@@ -33,9 +33,7 @@ public class SiteUses {
 
     private int useTypeId;
 
-    @ManyToOne
-    @JoinColumn(name="site_id")
-    private Site site;
+    private int siteId;
 
     public int getId() {
         return id;
@@ -69,8 +67,12 @@ public class SiteUses {
         this.useTypeId = useTypeId;
     }
 
-    public String getSite() {
-        return site.getName();
+    public int getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(int siteId) {
+        this.siteId = siteId;
     }
 
 }
